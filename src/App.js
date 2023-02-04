@@ -1,23 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import Home from './components/Home'
+import Login from './components/Login'
 
 function App() {
+
+  const userInfo = {
+    username: "samuel.han@gmail.com"
+  }
+
+  const [user, setUser] = useState({ username: "" });
+
+  const LoggingIn = details => {
+    console.log(details);
+    setUser({ username: details.username });
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {(user.username != "") ? (
+        <Home username={user.username} />
+      ) : (
+        <Login LoggingIn={LoggingIn} />
+      )}
     </div>
   );
 }
