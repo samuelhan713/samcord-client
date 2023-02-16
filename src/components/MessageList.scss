@@ -1,3 +1,7 @@
-.message {
+.messages {
   color: white;
+}
+
+.tfield::before {
+  border-color: white;
 }

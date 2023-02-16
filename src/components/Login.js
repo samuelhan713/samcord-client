@@ -17,7 +17,7 @@ function Login({ LoggingIn }) {
           Samcord
         </div>
         <div className="form__group field">
-          <input onChange={e => setDetails({ ...details, username: e.target.value })} value={details.username} type="input" className="form__field" placeholder="Username" name="inputname" id='username' required />
+          <input autoComplete='off' onChange={e => setDetails({ ...details, username: e.target.value })} value={details.username} type="input" className="form__field" placeholder="Username" name="inputname" id='username' required />
           <label htmlFor="username" className="form__label">Username</label>
           <button className="button-50" role="button" >SUBMIT</button>
         </div>
