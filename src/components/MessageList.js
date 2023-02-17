@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import './MessageList.scss';
 import Button from '@mui/material/Button';
-import Field from '@mui/material/TextField';
 import { Box } from '@mui/system';
 import TextField from '@mui/material/TextField';
 import { useEffect } from 'react';
 import { io } from 'socket.io-client';
+import { Container, Typography } from '@mui/material';
 
 
 
@@ -30,6 +30,7 @@ function MessageList() {
 
     const [socket, setSocket] = useState(null);
     const [message, setMessage] = useState('');
+    const [chat, setChat] = useState(['']);
 
     useEffect(() => {
         setSocket(io("http://localhost:4000"));
@@ -38,7 +39,9 @@ function MessageList() {
     useEffect(() => {
         if (!socket) return;
         socket.on('message-from-server', (data) => {
-            console.log('message received on the CLIENT side', data);
+            //the message will be sent to all other clients connected to the socket besides the sender itself
+            /* console.log('message received on the CLIENT side', data); */
+            setChat((prev) => [...prev, data.message]); //data.message because message is an object
         })
     }, [socket]);
 
@@ -51,7 +54,14 @@ function MessageList() {
 
     return (
         <div className="message-list">
-            <div className='messages'>
+            <Container>
+                <Box>
+                    {chat.map((m) => (
+                        <Typography>{m}</Typography>
+                    ))}
+                </Box>
+
+
                 <Box component="form" onSubmit={handleForm}>
                     <TextField
                         className='tfield'
@@ -66,7 +76,8 @@ function MessageList() {
                     />
                     <Button variant='text' type='submit'>Submit</Button>
                 </Box>
-            </div>
+            </Container>
+
         </div>
     );
 }
