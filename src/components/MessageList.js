@@ -5,7 +5,8 @@ import { Box } from '@mui/system';
 import TextField from '@mui/material/TextField';
 import { useEffect } from 'react';
 import { io } from 'socket.io-client';
-import { Container, Typography } from '@mui/material';
+import SendIcon from "@mui/icons-material/Send";
+import { Container, Typography, OutlinedInput, InputAdornment, IconButton } from '@mui/material';
 
 
 
@@ -57,28 +58,31 @@ function MessageList() {
             <Container>
                 <Box>
                     {chat.map((m) => (
-                        <Typography>{m}</Typography>
+                        <Typography sx={{ marginBottom: 0.5 }}>{m}</Typography>
                     ))}
                 </Box>
-
-
                 <Box component="form" onSubmit={handleForm}>
-                    <TextField
-                        className='tfield'
-                        autoComplete='off'
-                        sx={{ input: { color: 'white' } }}
-                        id='standard-basic'
-                        label="Write your message"
-                        InputLabelProps={{ style: { color: 'white' } }}
-                        variant='standard' value={message}
+                    <OutlinedInput
+                        sx={{ backgroundColor: "white" }}
+                        border="white"
+                        size="small"
+                        fullWidth
+                        id="message-input"
+                        value={message}
+                        placeholder="Write your message"
                         onChange={(e) => setMessage(e.target.value)}
-                        borderColor='white'
+                        endAdornment={
+                            <InputAdornment position="end">
+                                <IconButton type="submit" edge="end">
+                                    <SendIcon />
+                                </IconButton>
+                            </InputAdornment>
+                        }
                     />
-                    <Button variant='text' type='submit'>Submit</Button>
                 </Box>
             </Container>
 
-        </div>
+        </div >
     );
 }
 
