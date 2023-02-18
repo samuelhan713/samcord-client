@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import './MessageList.scss';
+import '../css/ChatWindow.scss';
 import Button from '@mui/material/Button';
 import { Box } from '@mui/system';
 import TextField from '@mui/material/TextField';
 import { useEffect } from 'react';
 import { io } from 'socket.io-client';
 import SendIcon from "@mui/icons-material/Send";
-import { Container, Typography, OutlinedInput, InputAdornment, IconButton } from '@mui/material';
+import { Container, Typography, OutlinedInput, InputAdornment, IconButton, InputLabel } from '@mui/material';
 
 
 
@@ -32,6 +32,8 @@ function MessageList() {
     const [socket, setSocket] = useState(null);
     const [message, setMessage] = useState('');
     const [chat, setChat] = useState(['']);
+    const [typing, setTyping] = useState(false);
+    const [typingTimeout, setTypingTimeout] = useState(null);
 
     useEffect(() => {
         setSocket(io("http://localhost:4000"));
@@ -44,6 +46,12 @@ function MessageList() {
             /* console.log('message received on the CLIENT side', data); */
             setChat((prev) => [...prev, data.message]); //data.message because message is an object
         })
+        socket.on('typing-started-from-server', () => {
+            setTyping(true); //can't we just set typing to false after a timeout here?
+        })
+        socket.on('typing-stopped-from-server', () => {
+            setTyping(false);
+        })
     }, [socket]);
 
 
@@ -51,6 +59,19 @@ function MessageList() {
         e.preventDefault();
         socket.emit("send-message", { message }); //this is connected to 'send-messsage' in server.js
         setMessage('');
+    }
+
+    function handleInput(e) {
+        setMessage(e.target.value);
+        socket.emit('typing-started');
+
+        if (typingTimeout) clearTimeout(typingTimeout);
+
+        setTypingTimeout(setTimeout(() => {
+            console.log('typing stopped');
+            socket.emit('typing-stopped');
+        }, 1000));
+
     }
 
     return (
@@ -62,7 +83,16 @@ function MessageList() {
                     ))}
                 </Box>
                 <Box component="form" onSubmit={handleForm}>
+                    {typing &&
+                        <InputLabel sx={{ color: "white" }} shrink htmlFor="message-input">
+                            Typing...
+                        </InputLabel>
+                    }
+
+                    {/* SET TYPING TO FALSE WHEN NOT TYPING */}
+
                     <OutlinedInput
+                        autoComplete='off'
                         sx={{ backgroundColor: "white" }}
                         border="white"
                         size="small"
@@ -70,7 +100,8 @@ function MessageList() {
                         id="message-input"
                         value={message}
                         placeholder="Write your message"
-                        onChange={(e) => setMessage(e.target.value)}
+                        /* onChange={(e) => setMessage(e.target.value)} */
+                        onChange={handleInput}
                         endAdornment={
                             <InputAdornment position="end">
                                 <IconButton type="submit" edge="end">

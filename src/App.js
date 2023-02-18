@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import Home from './components/Home'
-import Login from './components/Login'
+import { Outlet } from 'react-router-dom';
+import Header from './components/Header';
+import Home from './components/pages/Home'
+import Login from './components/pages/Login'
 
 
 function App() {
@@ -18,11 +20,13 @@ function App() {
 
   return (
     <div className="App">
-      {(user.username != "") ? (
+      {/* {(user.username != "") ? (
         <Home username={user.username} />
       ) : (
         <Login LoggingIn={LoggingIn} />
-      )}
+      )} */}
+      <Header />
+      <Outlet />
     </div>
   );
 }

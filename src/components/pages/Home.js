@@ -1,6 +1,6 @@
 import React from 'react';
-import './Home.scss';
-import MessageList from './MessageList';
+import '../css/Home.scss';
+import MessageList from './ChatWindow';
 
 
 //This should be the "smart" component
@@ -8,7 +8,7 @@ import MessageList from './MessageList';
 function Home() {
     return (
         <div>
-            <MessageList />
+            Home
         </div>
 
     );

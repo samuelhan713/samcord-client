@@ -1,6 +1,5 @@
 import { React, useState, Component } from 'react';
-import './Login.scss';
-import Home from './Home';
+import "../css/Login.scss";
 
 function Login({ LoggingIn }) {
   const [details, setDetails] = useState({ username: "" });
