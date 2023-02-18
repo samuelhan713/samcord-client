@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import Header from './components/Header';
-import Home from './components/pages/Home'
-import Login from './components/pages/Login'
-
+import setSocket from 'socket.io-client';
+import { io } from 'socket.io-client';
+import "./App.css";
 
 function App() {
+  const [socket, setSocket] = useState(null);
+
+
+  useEffect(() => {
+    setSocket(io("http://localhost:4000"));
+  }, []);
 
   const userInfo = {
     username: "samuel.han@gmail.com"
@@ -26,7 +32,7 @@ function App() {
         <Login LoggingIn={LoggingIn} />
       )} */}
       <Header />
-      <Outlet />
+      <Outlet context={{ socket }} />
     </div>
   );
 }

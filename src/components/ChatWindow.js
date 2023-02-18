@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import '../css/ChatWindow.scss';
-import Button from '@mui/material/Button';
+import "../css/ChatWindow.scss";
 import { Box } from '@mui/system';
-import TextField from '@mui/material/TextField';
 import { useEffect } from 'react';
-import { io } from 'socket.io-client';
 import SendIcon from "@mui/icons-material/Send";
 import { Container, Typography, OutlinedInput, InputAdornment, IconButton, InputLabel } from '@mui/material';
+import { useOutletContext, useParams } from 'react-router-dom';
 
 
 
@@ -25,19 +23,14 @@ const DUMMY_DATA = [
     }
 ]
 
-
-
 function MessageList() {
 
-    const [socket, setSocket] = useState(null);
+    const { socket } = useOutletContext();
     const [message, setMessage] = useState('');
     const [chat, setChat] = useState(['']);
     const [typing, setTyping] = useState(false);
     const [typingTimeout, setTypingTimeout] = useState(null);
-
-    useEffect(() => {
-        setSocket(io("http://localhost:4000"));
-    }, []);
+    const { roomId } = useParams();
 
     useEffect(() => {
         if (!socket) return;
@@ -57,19 +50,19 @@ function MessageList() {
 
     function handleForm(e) {
         e.preventDefault();
-        socket.emit("send-message", { message }); //this is connected to 'send-messsage' in server.js
+        socket.emit("send-message", { message, roomId }); //this is connected to 'send-messsage' in server.js
+        setChat((prev) => [...prev, message]);
         setMessage('');
     }
 
     function handleInput(e) {
         setMessage(e.target.value);
-        socket.emit('typing-started');
+        socket.emit('typing-started', { roomId });
 
         if (typingTimeout) clearTimeout(typingTimeout);
 
         setTypingTimeout(setTimeout(() => {
-            console.log('typing stopped');
-            socket.emit('typing-stopped');
+            socket.emit('typing-stopped', { roomId });
         }, 1000));
 
     }
@@ -82,6 +75,9 @@ function MessageList() {
                         <Typography sx={{ marginBottom: 0.5 }}>{m}</Typography>
                     ))}
                 </Box>
+                {
+                    roomId && <Typography>Room: {roomId}</Typography>
+                }
                 <Box component="form" onSubmit={handleForm}>
                     {typing &&
                         <InputLabel sx={{ color: "white" }} shrink htmlFor="message-input">
