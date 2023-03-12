@@ -37,6 +37,7 @@ function MessageList() {
         socket.on('message-from-server', (data) => {
             //the message will be sent to all other clients connected to the socket besides the sender itself
             /* console.log('message received on the CLIENT side', data); */
+            console.log("message content: ", data.message);
             setChat((prev) => [...prev, data.message]); //data.message because message is an object
         })
         socket.on('typing-started-from-server', () => {
@@ -96,7 +97,6 @@ function MessageList() {
                         id="message-input"
                         value={message}
                         placeholder="Write your message"
-                        /* onChange={(e) => setMessage(e.target.value)} */
                         onChange={handleInput}
                         endAdornment={
                             <InputAdornment position="end">
