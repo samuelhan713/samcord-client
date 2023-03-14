@@ -6,8 +6,6 @@ import SendIcon from "@mui/icons-material/Send";
 import { Container, Typography, OutlinedInput, InputAdornment, IconButton, InputLabel } from '@mui/material';
 import { useOutletContext, useParams } from 'react-router-dom';
 
-
-
 const DUMMY_DATA = [
     {
         senderId: 'sams d',
@@ -37,7 +35,7 @@ function MessageList() {
         socket.on('message-from-server', (data) => {
             //the message will be sent to all other clients connected to the socket besides the sender itself
             /* console.log('message received on the CLIENT side', data); */
-            console.log("message content: ", data.message);
+            console.log("message content: ", data.message); //why is this printing twice??????
             setChat((prev) => [...prev, data.message]); //data.message because message is an object
         })
         socket.on('typing-started-from-server', () => {
@@ -47,7 +45,6 @@ function MessageList() {
             setTyping(false);
         })
     }, [socket]);
-
 
     function handleForm(e) {
         e.preventDefault();
