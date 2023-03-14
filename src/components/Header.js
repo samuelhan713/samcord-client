@@ -1,9 +1,15 @@
 import { Button, Card } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from 'uuid';
 
 export default function Header() {
-    const roomId = uuidv4();
+    const navigate = useNavigate();
+
+    function createNewRoom() {
+        const roomId = uuidv4();
+        navigate(`/room/${roomId}`)
+    }
+
     return (
         <Card>
             <Link to="/">
@@ -12,9 +18,13 @@ export default function Header() {
             <Link to="/chats">
                 <Button>Chats</Button>
             </Link>
-            <Link to={`/room/${roomId}`}>
+            <Button onClick={createNewRoom}>
+                New Room
+            </Button>
+
+            {/* <Link to={`/room/${roomId}`}>
                 Room 1
-            </Link>
+            </Link> */}
         </Card>
     )
 }
