@@ -31,7 +31,7 @@ export default function Header({ socket }) {
             <Link to="/chats">
                 <Button>Chats</Button>
             </Link>
-            {/* <Button onClick={createNewRoom}>
+            <Button onClick={createNewRoom}>
                 New Room
             </Button>
             <Box>
@@ -45,7 +45,7 @@ export default function Header({ socket }) {
 
                     ))
                 }
-            </Box> */}
+            </Box>
 
 
             {/* <Link to={`/room/${roomId}`}>
