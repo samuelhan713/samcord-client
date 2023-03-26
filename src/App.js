@@ -31,7 +31,7 @@ function App() {
       ) : (
         <Login LoggingIn={LoggingIn} />
       )} */}
-      <Header />
+      <Header socket={socket} />
       <Outlet context={{ socket }} />
     </div>
   );
