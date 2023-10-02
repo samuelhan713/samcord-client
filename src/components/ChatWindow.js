@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import SendIcon from "@mui/icons-material/Send";
 import { Container, Typography, OutlinedInput, InputAdornment, IconButton, InputLabel } from '@mui/material';
 import { useOutletContext, useParams } from 'react-router-dom';
+import Header from './Header';
 
 const DUMMY_DATA = [
     {
@@ -21,9 +22,9 @@ const DUMMY_DATA = [
     }
 ]
 
-function MessageList() {
+function MessageList({ socket }) {
 
-    const { socket } = useOutletContext();
+    /* const { socket, setSocket } = useOutletContext(); */
     const [message, setMessage] = useState('');
     const [chat, setChat] = useState(['']);
     const [typing, setTyping] = useState(false);
@@ -64,6 +65,7 @@ function MessageList() {
         }, 1000));
 
     }
+
 
     return (
         <div className="message-list">

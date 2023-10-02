@@ -3,6 +3,7 @@ import App from "./App";
 import Home from "./pages/Home";
 import MessageList from "./components/ChatWindow";
 import Room from "./pages/Room";
+import Login from "./components/Login";
 
 const router = createBrowserRouter([
     {
@@ -10,7 +11,7 @@ const router = createBrowserRouter([
         element: <App />,
         children: [
             {
-                path: "/",
+                path: "/home",
                 element: <Home />
             },
             {

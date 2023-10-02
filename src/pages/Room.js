@@ -8,7 +8,6 @@ export default function Room() {
 
     useEffect(() => {
         if (!socket) return;
-        /* console.log(params); */
         socket.emit('join-room', { roomId: params.roomId }); //passed as an object
     }, [socket])
 

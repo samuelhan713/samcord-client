@@ -1,13 +1,30 @@
-import { React, useState, Component } from 'react';
+import { React, useState, Component, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import "../css/Login.scss";
 
 function Login({ LoggingIn }) {
   const [details, setDetails] = useState({ username: "" });
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  let navigate = useNavigate();
 
   const submitHandler = e => {
+    const user = { "username": details.username };
+    console.log("SUBMITTED");
+    setIsLoggedIn(true);
     e.preventDefault();
-    LoggingIn(details);
   }
+
+  const routeChange = () => {
+    let path = '/home';
+    navigate(path);
+  }
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      console.log("ROUTE CHANGE");
+      routeChange();
+    }
+  }, [isLoggedIn]);
 
   return (
     <form onSubmit={submitHandler}>
@@ -26,11 +43,6 @@ function Login({ LoggingIn }) {
 }
 
 export default Login;
-
-
-
-
-
 
 
 

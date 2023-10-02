@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useOutletContext } from "react-router-dom";
 import { v4 as uuidv4 } from 'uuid';
 
-export default function Header({ socket }) {
+export default function Header({ socket, user, setUser }) {
     const navigate = useNavigate();
     const [rooms, setRooms] = useState([]);
 
@@ -12,6 +12,11 @@ export default function Header({ socket }) {
         navigate(`/room/${roomId}`);
         socket.emit("new-room-created", { roomId });
         setRooms([...rooms, roomId]);
+    }
+
+    const handleLogout = () => {
+        console.log(user.username);
+        setUser({ username: "" });
     }
 
     useEffect(() => {
@@ -25,16 +30,23 @@ export default function Header({ socket }) {
 
     return (
         <Card>
-            <Link to="/">
+            {console.log(socket)}
+            <Link to="/home">
                 <Button>Home</Button>
             </Link>
             <Link to="/chats">
                 <Button>Chats</Button>
             </Link>
-            <Button onClick={createNewRoom}>
-                New Room
+            <Button onClick={handleLogout}>
+                Logout
             </Button>
-            <Box>
+            <Card>
+                You are {user.username}
+            </Card>
+            {/* <Button onClick={createNewRoom}>
+                New Room
+            </Button> */}
+            {/* <Box>
                 {
                     rooms.map((room) => (
                         rooms && (
@@ -45,7 +57,7 @@ export default function Header({ socket }) {
 
                     ))
                 }
-            </Box>
+            </Box> */}
 
 
             {/* <Link to={`/room/${roomId}`}>
