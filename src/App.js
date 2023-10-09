@@ -10,16 +10,16 @@ import MessageList from './components/ChatWindow';
 
 function App() {
   const [socket, setSocket] = useState(null);
+  const [user, setUser] = useState({ username: "" });
 
   /* useEffect(() => {
     setSocket(io("http://localhost:4000"));
   }, []); */
 
-  const [user, setUser] = useState({ username: "" });
 
   const LoggingIn = details => {
     console.log(details);
-    setUser({ username: details.username });
+    setUser({ username: user.username });
   }
 
   useEffect(() => {
@@ -30,9 +30,9 @@ function App() {
     <div className="App">
       <div>
         <Routes>
-          <Route path='/login' element={<Login />}></Route>
-          <Route path='/home' element={<Home socket={socket} />}></Route>
-          <Route path='/chats' element={<MessageList />}></Route>
+          <Route path='/login' element={<Login user={user} setUser={setUser} />}></Route>
+          <Route path='/home' element={<Home socket={socket} user={user} setUser={setUser} />}></Route>
+          <Route path='/chats' element={<MessageList socket={socket} user={user} setUser={setUser} />}></Route>
           <Route path='/' element={<Login />}></Route>
 
           {/* <Route exact path='/' render={() => (
@@ -41,8 +41,6 @@ function App() {
             />
           )} /> */}
         </Routes>
-        {/* <Header socket={socket} user={user} setUser={setUser} />
-        <Outlet context={{ socket }} /> */}
       </div>
     </div>
   );

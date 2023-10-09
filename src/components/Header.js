@@ -7,15 +7,15 @@ export default function Header({ socket, user, setUser }) {
     const navigate = useNavigate();
     const [rooms, setRooms] = useState([]);
 
-    function createNewRoom() {
+    /* function createNewRoom() {
         const roomId = uuidv4();
         navigate(`/room/${roomId}`);
         socket.emit("new-room-created", { roomId });
         setRooms([...rooms, roomId]);
-    }
+    } */
 
     const handleLogout = () => {
-        console.log(user.username);
+        console.log("USERNAME: " + user.username);
         setUser({ username: "" });
     }
 
@@ -26,7 +26,6 @@ export default function Header({ socket, user, setUser }) {
             setRooms([...rooms, roomId]);
         })
     }, [socket]);
-
 
     return (
         <Card>

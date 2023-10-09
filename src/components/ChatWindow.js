@@ -5,31 +5,17 @@ import { useEffect } from 'react';
 import SendIcon from "@mui/icons-material/Send";
 import { Container, Typography, OutlinedInput, InputAdornment, IconButton, InputLabel } from '@mui/material';
 import { useOutletContext, useParams } from 'react-router-dom';
-import Header from './Header';
+import Header from '../components/Header';
 
-const DUMMY_DATA = [
-    {
-        senderId: 'sams d',
-        text: 'Good D bro, good D'
-    },
-    {
-        senderId: 'john cena',
-        text: 'You cant see me'
-    },
-    {
-        senderId: 'micheal jackson',
-        text: 'weeeeooooo'
-    }
-]
 
-function MessageList({ socket }) {
+function MessageList({ socket, user, setUser }) {
 
-    /* const { socket, setSocket } = useOutletContext(); */
     const [message, setMessage] = useState('');
     const [chat, setChat] = useState(['']);
     const [typing, setTyping] = useState(false);
     const [typingTimeout, setTypingTimeout] = useState(null);
     const { roomId } = useParams();
+    //const [user, setUser] = useState({ username: "sammy" });
 
     useEffect(() => {
         if (!socket) return;
@@ -66,49 +52,52 @@ function MessageList({ socket }) {
 
     }
 
-
     return (
-        <div className="message-list">
-            <Container>
-                <Box>
-                    {chat.map((m) => (
-                        <Typography sx={{ marginBottom: 0.5 }}>{m}</Typography>
-                    ))}
-                </Box>
-                {
-                    roomId && <Typography>Room: {roomId}</Typography>
-                }
-                <Box component="form" onSubmit={handleForm}>
-                    {typing &&
-                        <InputLabel sx={{ color: "white" }} shrink htmlFor="message-input">
-                            Typing...
-                        </InputLabel>
+        <div>
+            <Header socket={socket} user={user} setUser={setUser} />
+            <div className="message-list">
+                <Container>
+                    <Box>
+                        {chat.map((m) => (
+                            <Typography sx={{ marginBottom: 0.5 }}>{m}</Typography>
+                        ))}
+                    </Box>
+                    {
+                        roomId && <Typography>Room: {roomId}</Typography>
                     }
-
-                    {/* SET TYPING TO FALSE WHEN NOT TYPING */}
-
-                    <OutlinedInput
-                        autoComplete='off'
-                        sx={{ backgroundColor: "white" }}
-                        border="white"
-                        size="small"
-                        fullWidth
-                        id="message-input"
-                        value={message}
-                        placeholder="Write your message"
-                        onChange={handleInput}
-                        endAdornment={
-                            <InputAdornment position="end">
-                                <IconButton type="submit" edge="end">
-                                    <SendIcon />
-                                </IconButton>
-                            </InputAdornment>
+                    <Box component="form" onSubmit={handleForm}>
+                        {typing &&
+                            <InputLabel sx={{ color: "white" }} shrink htmlFor="message-input">
+                                Typing...
+                            </InputLabel>
                         }
-                    />
-                </Box>
-            </Container>
 
-        </div >
+                        {/* SET TYPING TO FALSE WHEN NOT TYPING */}
+
+                        <OutlinedInput
+                            autoComplete='off'
+                            sx={{ backgroundColor: "white" }}
+                            border="white"
+                            size="small"
+                            fullWidth
+                            id="message-input"
+                            value={message}
+                            placeholder="Write your message"
+                            onChange={handleInput}
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <IconButton type="submit" edge="end">
+                                        <SendIcon />
+                                    </IconButton>
+                                </InputAdornment>
+                            }
+                        />
+                    </Box>
+                </Container>
+
+            </div >
+        </div>
+
     );
 }
 
